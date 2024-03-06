@@ -1,0 +1,2 @@
+# flask-server
+一个基于flask框架的http服务器，包含http服务器常用的基础代码，便于快速起一个python版的http服务器
