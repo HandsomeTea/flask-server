@@ -2,11 +2,12 @@ import os
 from typing import Dict, Optional, Literal
 
 __env_type__ = Literal[
-    'ENV'
+    'ENV',
+    'DB_URL'
 ]
-
 __default_env__ = {
-    'ENV': 'development'
+    'ENV': 'development',
+    'DB_URL': 'mongodb://admin:admin@localhost:27017/flask-test?authSource=admin'
 }
 
 
