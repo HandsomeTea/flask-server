@@ -8,6 +8,7 @@ __env_type__ = Literal[
 __default_env__ = {
     'ENV': 'development',
     'DB_URL': 'mongodb://admin:admin@localhost:27017/flask-test?authSource=admin'
+    # 'DB_URL': 'mysql://root:root@0.0.0.0:3306/flask-test'
 }
 
 

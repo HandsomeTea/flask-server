@@ -1,7 +1,6 @@
 import json
 from datetime import datetime
 from mongoengine import Document
-from mongoengine.queryset.base import BaseQuerySet
 from mongoengine.errors import InvalidDocumentError
 
 
@@ -18,26 +17,31 @@ class BaseModel(Document):
     def __str__(self):
         return self.__repr__()
 
-    def __deal_id__(query):
+    def __validate_query_id__(query):
         if (type(query) is dict and '_id' in query):
             query['id'] = query.pop('_id')
 
         return query
 
+    def to_dict(self):
+        try:
+            if type(self) is list:
+                return [item.to_mongo().to_dict() for item in self]
+            else:
+                return self.to_mongo().to_dict()
+        except InvalidDocumentError:
+            return self
+
     @classmethod
-    def insert_one(self, data, to_dict=False):
+    def insert_one(self, data):
         if (type(data) is not dict or type(data) is dict and len(data) <= 0):
             return
-        result = self(**data).save()
-
-        if (to_dict):
-            return self.to_dict(result)
-        return result
+        return self(**data).save()
 
     @classmethod
     def insert_many(self, data, to_dict=False):
         if (type(data) is not list or type(data) is list and len(data) <= 0):
-            return
+            return []
         result = self.objects.insert([self(**d) for d in data])
 
         if (to_dict):
@@ -118,28 +122,23 @@ class BaseModel(Document):
             datas.update(**set)
 
     @classmethod
-    def find_one(self, query={}, to_dict=False):
+    def find_one(self, query={}):
         if (type(query) is not dict):
             return None
 
-        query = self.__deal_id__(query)
-        result = self.objects(**query).first()
-
-        if (to_dict):
-            return self.to_dict(result)
-
-        return result
+        query = self.__validate_query_id__(query)
+        return self.objects(**query).first()
 
     @classmethod
-    def find_by_id(self, id: str, to_dict=False):
-        return self.find_one(query={'_id': id}, to_dict=to_dict)
+    def find_by_id(self, id: str):
+        return self.objects(id=id).first()
 
     @classmethod
     def find_many(self, query={}, to_dict=False):
         if (type(query) is not dict):
             return []
 
-        query = self.__deal_id__(query)
+        query = self.__validate_query_id__(query)
         result = self.objects(**query).all()
 
         if (to_dict):
@@ -148,23 +147,24 @@ class BaseModel(Document):
         return result
 
     @classmethod
-    def paginate(self, page, per_page, query={}, to_dict=False):
+    def paginate(self, page, limit, query={}):
         if (type(query) is not dict):
             return {
-                'items': [],
+                'data': [],
                 'total': 0,
-                'per': per_page,
+                'limit': limit,
                 'page': page
             }
 
-        query = self.__deal_id__(query)
-        result = self.objects(**query).paginate(page, per_page)
+        query = self.__validate_query_id__(query)
+        result = self.objects(**query).limit(limit).skip((page - 1) * limit)
 
+        print('========', result)
         return {
-            'items': self.to_dict(result.items) if to_dict is True else result.items,
-            'total': result.total,
-            'per': result.per_page,
-            'page': result.page
+            'data': [item.to_dict() for item in result],
+            'total': self.count(query),
+            'limit': limit,
+            'page': page
         }
 
     @classmethod
@@ -172,15 +172,5 @@ class BaseModel(Document):
         if (type(query) is not dict):
             return 0
 
-        query = self.__deal_id__(query)
+        query = self.__validate_query_id__(query)
         return self.objects(**query).count()
-
-    @classmethod
-    def to_dict(self, data):
-        try:
-            if isinstance(data, BaseQuerySet) or type(data) is list:
-                return [item.to_mongo().to_dict() for item in data]
-            else:
-                return data.to_mongo().to_dict()
-        except InvalidDocumentError:
-            return data

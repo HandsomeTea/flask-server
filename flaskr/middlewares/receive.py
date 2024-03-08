@@ -24,7 +24,7 @@ def log_request():
 
     try:
         log_api.info(f'{request.method}:{request.path}\n' + json.dumps({
-            'query': dict(request.args),
+            'query': request.args.to_dict(),
             'body': _body,
             'headers': dict(request.headers),
         }, indent=4, ensure_ascii=False), extra={
@@ -34,7 +34,7 @@ def log_request():
         })
     except Exception:
         log_api.info(f'{request.method}:{request.path}\n' + {
-            'query': dict(request.args),
+            'query': request.args.to_dict(),
             'body': _body,
             'headers': dict(request.headers),
         }, extra={
