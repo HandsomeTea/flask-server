@@ -18,4 +18,7 @@ python -m flaskr
 https://{host}/{base_path}/ui/
 
 代码风格检查：
-flake8 --config=tox.ini
+    git hooks
+        pre-commit install
+    手动
+        flake8 --config=tox.ini

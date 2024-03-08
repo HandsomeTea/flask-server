@@ -50,6 +50,9 @@ def login():
     # print(count, type(count))
     # return {'count': count}
 
+    # log.debug(Users.query().filter_by().count())
+    # log.debug(Users.model.query(Users).filter_by().count())
+
     body = request.get_json()
     log.debug(body)
     log.debug(type(body))
@@ -166,6 +169,9 @@ def get_user_list():
     # count = Users.count({'name': 'lhf1'})
     # print(count, type(count))
     # return {'count': count}
+
+    # base model无法满足操作需求，可使用orm原生的接口
+    # log.debug(type(Users.objects().all()))
 
     query = request.args.to_dict()
     log.debug(query)
