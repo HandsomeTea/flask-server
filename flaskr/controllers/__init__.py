@@ -1,1 +1,1 @@
-import flaskr.controllers.user  # noqa: F401
+import flaskr.controllers.v1  # noqa: F401

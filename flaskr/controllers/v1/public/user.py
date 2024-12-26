@@ -1,10 +1,10 @@
 from flask import request
-from flaskr.app import application
+from flaskr import v1_public_api
 from flaskr.configs import HttpError, ErrorCode, log
-# from flaskr.models import Users
+from flaskr.models import Users
 
 
-@application.post('/test')
+@v1_public_api.post('/test')
 def test():
     return 'success'
     return {
@@ -13,7 +13,7 @@ def test():
     raise HttpError('Invalid username or password', ErrorCode.UNAUTHORIZED)
 
 
-@application.post('/dbtest')
+@v1_public_api.post('/dbtest')
 def login():
     # 这个接口的数据库操作全部用的是mysql
     # Users.create({'name': '222', 'age': 12})
@@ -60,7 +60,7 @@ def login():
     return {'result': 'success'}
 
 
-@application.get('/dbtest')
+@v1_public_api.get('/dbtest')
 def get_user_list():
     # 这个接口的数据库操作全部用的是mongodb
     # insert = Users.insert_one({
@@ -166,9 +166,9 @@ def get_user_list():
     # Users.update_many(query={'name': 'lhf'}, set={'name': 'lhf1'})
     # return {'count': Users.count({'name': 'lhf'})}
 
-    # count = Users.count({'name': 'lhf1'})
-    # print(count, type(count))
-    # return {'count': count}
+    count = Users.count({'name': 'lhf1'})
+    print(count, type(count))
+    return {'count': count}
 
     # base model无法满足操作需求，可使用orm原生的接口
     # log.debug(type(Users.objects().all()))
