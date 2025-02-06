@@ -2,10 +2,19 @@ from flask import request
 from flaskr import v1_public_api
 from flaskr.configs import HttpError, ErrorCode, log
 from flaskr.models import Users
+# from flaskr.utils import Path
 
 
 @v1_public_api.post('/test')
 def test():
+    # import os
+    # path = os.path.join(os.path.dirname(__file__), './aaa/sss')
+    # path1 = os.path.join(path, './11')
+    # path2 = os.path.join(path, './112')
+    # Path.mkdir(path1)
+    # Path.mkdir(path2)
+    # Path.rmdir(path)
+
     return 'success'
     return {
         'data': 123
