@@ -8,11 +8,14 @@ from flaskr.configs.logger import log_system
 
 class __PathOperate:
 
-    def mkdir(self, path: str):
+    def mkdir(self, path: str, clear=False):
         abspath = os.path.abspath(path)
 
         if os.path.isfile(abspath):
             abspath = os.path.dirname(abspath)
+
+        if os.path.exists(abspath) and clear:
+            self.rmdir(abspath)
 
         if not os.path.exists(abspath):
             os.makedirs(abspath)
@@ -25,10 +28,11 @@ class __PathOperate:
         if os.path.isfile(abspath):
             abspath = os.path.dirname(abspath)
 
-        def onerror(func, path, exc_info):
-            log_system.warning(f'remove {path} error: {exc_info}')
+        if os.path.exists(abspath):
+            def onerror(func, path, exc_info):
+                log_system.warning(f'remove {path} error: {exc_info}')
 
-        shutil.rmtree(path=abspath, ignore_errors=False, onerror=onerror)
+            shutil.rmtree(path=abspath, ignore_errors=False, onerror=onerror)
         # if os.path.exists(abspath):
         #     dir_content = os.listdir(abspath)
 
