@@ -2,58 +2,45 @@ import os
 import shutil
 from flaskr.configs.logger import log_system
 
-# 当前文件所在文件夹
+# 获取当前代码所在文件所属的文件夹路径
 # os.path.dirname(__file__)
 
 
 class __PathOperate:
 
-    def mkdir(self, path: str, clear=False):
-        abspath = os.path.abspath(path)
+    def mkdir(self, dir_path: str, clear=False):
+        abspath = os.path.abspath(dir_path)
 
-        if os.path.isfile(abspath):
-            abspath = os.path.dirname(abspath)
-
-        if os.path.exists(abspath) and clear:
-            self.rmdir(abspath)
+        if os.path.exists(abspath) and os.path.isdir(abspath):
+            if clear:
+                self.remove(abspath)
+            else:
+                return abspath
 
         if not os.path.exists(abspath):
-            os.makedirs(abspath)
+            try:
+                os.makedirs(abspath)
+            except Exception as e:
+                log_system.warning(f'create directory {abspath} with error {e}')
 
         return abspath
 
-    def rmdir(self, path: str):
+    def remove(self, path: str):
         abspath = os.path.abspath(path)
 
-        if os.path.isfile(abspath):
-            abspath = os.path.dirname(abspath)
+        if not os.path.exists(abspath):
+            return
 
-        if os.path.exists(abspath):
-            def onerror(func, path, exc_info):
-                log_system.warning(f'remove {path} error: {exc_info}')
+        if os.path.isdir(abspath):
+            def onerror(func, exc_path, exc_info):
+                log_system.warning(f'remove {exc_path} with error {exc_info[1]}')
 
             shutil.rmtree(path=abspath, ignore_errors=False, onerror=onerror)
-        # if os.path.exists(abspath):
-        #     dir_content = os.listdir(abspath)
-
-        #     if len(dir_content) == 0:
-        #         os.rmdir(abspath)
-        #     else:
-        #         for file in dir_content:
-        #             file_path = os.path.join(abspath, file)
-
-        #             if os.path.isfile(file_path):
-        #                 os.remove(file_path)
-        #             elif os.path.isdir(file_path):
-        #                 self.rmdir(file_path)
-
-        #         os.rmdir(abspath)
-
-    def rmfile(self, path: str):
-        abspath = os.path.abspath(path)
-
-        if os.path.exists(abspath) and os.path.isfile(abspath):
-            os.remove(abspath)
+        else:
+            try:
+                os.remove(abspath)
+            except Exception as e:
+                log_system.warning(f'remove file {abspath} with error {e}')
 
 
 Path = __PathOperate()

@@ -9,11 +9,11 @@ from flaskr.models import Users
 def test():
     # import os
     # path = os.path.join(os.path.dirname(__file__), './aaa/sss')
-    # path1 = os.path.join(path, './11')
+    # path1 = os.path.join(path, './11/ss.ts/test.ts')
     # path2 = os.path.join(path, './112')
     # Path.mkdir(path1)
     # Path.mkdir(path2)
-    # Path.rmdir(path)
+    # Path.remove(path)
 
     return 'success'
     return {
