@@ -3,12 +3,16 @@ from typing import Dict, Optional, Literal
 
 __env_type__ = Literal[
     'ENV',
-    'DB_URL'
+    'DB_URL',
+    'CELERY_BROKER_URL',
+    'CELERY_BACKEND_URL'
 ]
 __default_env__: Dict[__env_type__, str] = {
     'ENV': 'development',
-    'DB_URL': 'mongodb://admin:admin@localhost:27017/flask-test?authSource=admin'
-    # 'DB_URL': 'mysql://root:root@0.0.0.0:3306/flask-test'
+    'DB_URL': 'mongodb://admin:admin@localhost:27017/flask-test?authSource=admin',
+    # 'DB_URL': 'mysql://root:root@0.0.0.0:3306/flask-test',
+    'CELERY_BROKER_URL': 'redis://0.0.0.0:6379',
+    'CELERY_BACKEND_URL': 'redis://0.0.0.0:6379'
 }
 
 
