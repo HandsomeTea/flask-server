@@ -12,6 +12,7 @@ click-didyoumean==0.3.1
 click-plugins==1.1.1
 click-repl==0.3.0
 cryptography==42.0.5
+Deprecated==1.2.18
 distlib==0.3.8
 dnspython==2.6.1
 filelock==3.13.1
@@ -28,6 +29,14 @@ MarkupSafe==2.1.5
 mccabe==0.7.0
 mongoengine==0.28.1
 nodeenv==1.8.0
+opentelemetry-api==1.32.1
+opentelemetry-instrumentation==0.53b1
+opentelemetry-instrumentation-flask==0.53b1
+opentelemetry-instrumentation-wsgi==0.53b1
+opentelemetry-sdk==1.32.1
+opentelemetry-semantic-conventions==0.53b1
+opentelemetry-util-http==0.53b1
+packaging==25.0
 platformdirs==4.2.0
 pre-commit==3.5.0
 prompt_toolkit==3.0.50
@@ -48,4 +57,5 @@ vine==5.1.0
 virtualenv==20.25.1
 wcwidth==0.2.13
 Werkzeug==3.0.1
+wrapt==1.17.2
 zipp==3.17.0

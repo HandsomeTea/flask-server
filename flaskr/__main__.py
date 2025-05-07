@@ -1,5 +1,6 @@
 from flaskr import app_name
 from flaskr.app import application
+import flaskr.otel  # noqa: F401
 from flaskr.configs import get_env, log_system
 import flaskr.db  # noqa: F401
 import flaskr.middlewares  # noqa: F401
