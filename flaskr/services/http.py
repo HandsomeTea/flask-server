@@ -53,11 +53,11 @@ class __HTTPAdapter:
                 json=_body,
                 headers=_headers
             )
-            if response.status_code >= 200 and response.status_code < 300:
+            if response.ok:
                 result = response.json()
                 success = True
             else:
-                result = HttpError(response.json())
+                result = HttpError(response.content)
         except Exception as e:
             result = HttpError(e)
         finally:
